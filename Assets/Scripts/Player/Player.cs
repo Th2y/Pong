@@ -16,6 +16,15 @@ public class Player : MonoBehaviour
     [SerializeField] private KeyCode keyMoveUp = KeyCode.UpArrow;
     [SerializeField] private KeyCode keyMoveDown = KeyCode.DownArrow;
 
+    private Vector3 startPosition;
+    private bool initied = false;
+
+    private void Awake()
+    {
+        startPosition = transform.position;
+        initied = true;
+    }
+
     private void Update()
     {
         if (Input.GetKey(keyMoveUp))
@@ -26,5 +35,10 @@ public class Player : MonoBehaviour
         {
             playerRB.MovePosition(transform.position + transform.up * -speed);
         }
+    }
+
+    public void ResetPosition()
+    {
+        if (initied) transform.position = startPosition;
     }
 }

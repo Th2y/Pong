@@ -1,21 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public enum GameState
-{
-    START,
-    GAME,
-    WON
-}
-
 public class Points : MonoBehaviour
 {
-    [Header("Panels")]
-    [SerializeField] private GameObject panelGame;
-    [SerializeField] private GameObject panelWon;
-    [SerializeField] private GameObject panelStart;
+    [SerializeField] private BallBase ball;
 
     [Header("Players")]
     [SerializeField] private TextMeshProUGUI playerRText;
@@ -23,14 +11,8 @@ public class Points : MonoBehaviour
 
     [Header("Variables")]
     [SerializeField] private int pointsToWin = 5;
-    private GameState gameState = GameState.START;
     private int playerRPoints = 0;
     private int playerLPoints = 0;
-
-    private void Awake()
-    {
-        ChangeActualStateToStart();
-    }
 
     public void IncrementPointsPlayerR()
     {
@@ -48,47 +30,21 @@ public class Points : MonoBehaviour
 
     private void DetectIfWon()
     {
-        if (playerRPoints >= 5)
+        if (playerRPoints >= pointsToWin)
         {
-            ChangeActualStateToWon();
+            StateMachine.Instance.SwitchState(GameState.END_GAME);
         }
-        else if(playerLPoints >= 5)
+        else if(playerLPoints >= pointsToWin)
         {
-            ChangeActualStateToWon();
+            StateMachine.Instance.SwitchState(GameState.END_GAME);
         }
-    }
-
-    public void ChangeActualStateToStart()
-    {
-        gameState = GameState.START;
-        ChangePanelActive();
-    }
-
-    public void ChangeActualStateToGame()
-    {
-        gameState = GameState.GAME;
-        ChangePanelActive();
-    }
-
-    public void ChangeActualStateToWon()
-    {
-        gameState = GameState.WON;
-        ChangePanelActive();
-    }
-
-    private void ChangePanelActive()
-    {
-        panelGame.SetActive(gameState == GameState.GAME);
-        panelWon.SetActive(gameState == GameState.WON);
-        panelStart.SetActive(gameState == GameState.START);
-
-        if (gameState != GameState.GAME)
+        else
         {
-            RestartPoints();
+            StateMachine.Instance.SwitchState(GameState.RESET_POSITION);
         }
     }
 
-    private void RestartPoints()
+    public void RestartPoints()
     {
         playerRPoints = 0;
         playerLPoints = 0;
