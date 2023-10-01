@@ -4,8 +4,7 @@ using UnityEngine;
 public class ColorsData : ScriptableObject
 {
     public Color table;
-    public Color limitUp;
-    public Color limitDown;
+    public Color limits;
     public Color ball;
     public Color playerR;
     public Color playerL;

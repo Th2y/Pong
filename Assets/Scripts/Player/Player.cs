@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     private Vector3 startPosition;
     private bool initied = false;
 
-    private void Awake()
+    private void Start()
     {
         startPosition = transform.position;
         initied = true;

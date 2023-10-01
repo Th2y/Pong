@@ -14,7 +14,7 @@ public class BallBase : MonoBehaviour
 
     private bool canMove = false;
 
-    private void Awake()
+    private void Start()
     {
         startPosition = transform.position;
         startspeed = speed;
