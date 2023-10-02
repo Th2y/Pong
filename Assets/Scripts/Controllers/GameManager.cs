@@ -8,6 +8,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject panelStart;
     [SerializeField] private GameObject panelOptions;
     [SerializeField] private GameObject panelColors;
+    [SerializeField] private GameObject panelNames;
+    [SerializeField] private GameObject panelDefinitions;
+    [SerializeField] private GameObject panelScore;
+    [SerializeField] private GameObject menuBorder;
 
     [Header("References")]
     [SerializeField] private BallBase ball;
@@ -22,6 +26,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        points.Init();
     }
 
     public void ChangeActualStateToMenu()
@@ -60,6 +65,7 @@ public class GameManager : MonoBehaviour
         panelGame.SetActive(state == GameState.PLAYING || state == GameState.RESET_POSITION);
         panelWon.SetActive(state == GameState.END_GAME);
         panelStart.SetActive(state == GameState.MENU);
+        menuBorder.SetActive(state == GameState.MENU);
 
         if (hasWon)
         {
@@ -82,6 +88,24 @@ public class GameManager : MonoBehaviour
     public void OpenColors(bool open)
     {
         panelColors.SetActive(open);
+        panelOptions.SetActive(!open);
+    }
+
+    public void OpenNames(bool open)
+    {
+        panelNames.SetActive(open);
+        panelOptions.SetActive(!open);
+    }
+
+    public void OpenDefinitions(bool open)
+    {
+        panelDefinitions.SetActive(open);
+        panelOptions.SetActive(!open);
+    }
+
+    public void OpenScore(bool open)
+    {
+        panelScore.SetActive(open);
         panelOptions.SetActive(!open);
     }
 
