@@ -1,13 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("Controllers")]
-    [SerializeField] private string playerName;
-
     [Header("Moviment")]
     [SerializeField] private Rigidbody2D playerRB;
     [SerializeField] private float speed = 0.1f;
@@ -19,7 +13,7 @@ public class Player : MonoBehaviour
     private Vector3 startPosition;
     private bool initied = false;
 
-    private void Awake()
+    private void Start()
     {
         startPosition = transform.position;
         initied = true;

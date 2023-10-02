@@ -5,8 +5,8 @@ public class BallBase : MonoBehaviour
     [SerializeField] private Vector3 speed = new Vector3(1, 1, 0);    
 
     [Header("Randomization")]
-    [SerializeField] private Vector2 randSpeedY = new Vector2(1, 3);
-    [SerializeField] private Vector2 randSpeedX = new Vector2(1, 3);
+    [SerializeField] private Vector2 randMinSpeed = new Vector2(1, 3);
+    [SerializeField] private Vector2 randMaxSpeed = new Vector2(1, 3);
 
     [Header("Initial values")]
     private Vector3 startPosition;
@@ -14,7 +14,7 @@ public class BallBase : MonoBehaviour
 
     private bool canMove = false;
 
-    private void Awake()
+    private void Start()
     {
         startPosition = transform.position;
         startspeed = speed;
@@ -42,17 +42,11 @@ public class BallBase : MonoBehaviour
     private void OnPlayerColision()
     {
         speed.x *= -1;
-
-        float randX = Random.Range(randSpeedX.x, randSpeedX.y);
-
-        if (speed.x < 0)
-        {
-            randX = -randX;
-        }
-
+        float randX = Random.Range(randMinSpeed.x, randMaxSpeed.x);
+        if (speed.x < 0) randX = -randX;
         speed.x = randX;
 
-        float randY = Random.Range(randSpeedY.x, randSpeedY.y);
+        float randY = Random.Range(randMinSpeed.y, randMaxSpeed.y);
         speed.y = randY;
     }
 

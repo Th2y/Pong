@@ -6,6 +6,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject panelGame;
     [SerializeField] private GameObject panelWon;
     [SerializeField] private GameObject panelStart;
+    [SerializeField] private GameObject panelOptions;
+    [SerializeField] private GameObject panelColors;
+    [SerializeField] private GameObject panelNames;
+    [SerializeField] private GameObject panelDefinitions;
+    [SerializeField] private GameObject panelScore;
+    [SerializeField] private GameObject menuBorder;
 
     [Header("References")]
     [SerializeField] private BallBase ball;
@@ -14,23 +20,27 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
+    private GameState actualGameState = GameState.MENU;
     private bool hasWon = false;
 
     private void Awake()
     {
         Instance = this;
+        points.Init();
     }
 
     public void ChangeActualStateToMenu()
     {
         ball.ChangeCanMove(false);
-        ChangePanelActive(GameState.MENU);
+        actualGameState = GameState.MENU;
+        ChangePanelActive(actualGameState);
     }
 
     public void ChangeActualStateToGame()
     {
         ball.ChangeCanMove(true);
-        ChangePanelActive(GameState.PLAYING);
+        actualGameState = GameState.PLAYING;
+        ChangePanelActive(actualGameState);
     }
 
     public void ChangeActualStateToResetPosition()
@@ -38,14 +48,16 @@ public class GameManager : MonoBehaviour
         ball.ResetPosition();
         players[0].ResetPosition();
         players[1].ResetPosition();
-        ChangePanelActive(GameState.RESET_POSITION);
+        actualGameState = GameState.RESET_POSITION;
+        ChangePanelActive(actualGameState);
     }
 
     public void ChangeActualStateToEndGame()
     {
         hasWon = true;
         ball.ChangeCanMove(false);
-        ChangePanelActive(GameState.END_GAME);
+        actualGameState = GameState.END_GAME;
+        ChangePanelActive(actualGameState);
     }
 
     private void ChangePanelActive(GameState state)
@@ -53,11 +65,52 @@ public class GameManager : MonoBehaviour
         panelGame.SetActive(state == GameState.PLAYING || state == GameState.RESET_POSITION);
         panelWon.SetActive(state == GameState.END_GAME);
         panelStart.SetActive(state == GameState.MENU);
+        menuBorder.SetActive(state == GameState.MENU);
 
         if (hasWon)
         {
             hasWon = false;
             points.RestartPoints();
         }
+    }
+
+    public void OpenOptions(bool open)
+    {
+        panelOptions.SetActive(open);
+        if (!open)
+        {
+            panelGame.SetActive(actualGameState == GameState.PLAYING || actualGameState == GameState.RESET_POSITION);
+            panelWon.SetActive(actualGameState == GameState.END_GAME);
+            panelStart.SetActive(actualGameState == GameState.MENU);
+        }
+    }
+
+    public void OpenColors(bool open)
+    {
+        panelColors.SetActive(open);
+        panelOptions.SetActive(!open);
+    }
+
+    public void OpenNames(bool open)
+    {
+        panelNames.SetActive(open);
+        panelOptions.SetActive(!open);
+    }
+
+    public void OpenDefinitions(bool open)
+    {
+        panelDefinitions.SetActive(open);
+        panelOptions.SetActive(!open);
+    }
+
+    public void OpenScore(bool open)
+    {
+        panelScore.SetActive(open);
+        panelOptions.SetActive(!open);
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }
